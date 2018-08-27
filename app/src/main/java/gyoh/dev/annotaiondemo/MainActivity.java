@@ -2,7 +2,6 @@ package gyoh.dev.annotaiondemo;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -10,16 +9,11 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
-import android.support.annotation.StringDef;
 import android.support.annotation.UiThread;
-import android.support.annotation.WorkerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-
-import org.json.JSONObject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -46,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA})
-    public static final void openCamera() {
+    public void openCamera() {
 
     }
 
@@ -75,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //nullness 주석
-    @NonNull
+    @Nullable
     private String getImageUrl(@Nullable Character character) {
         return character != null ? character.getId() : null;
     }
@@ -84,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         startNextActivity(Mode.SHARE);
     }
 
-    private void startNextActivity(@Mode String mode) {
+    private void startNextActivity(@Mode int mode) {
         Intent intent = new Intent(this, NextActivity.class);
         intent.putExtra("mode", mode);
         startActivity(intent);
@@ -104,13 +98,15 @@ public class MainActivity extends AppCompatActivity {
     //def 주석
     @Retention(RetentionPolicy.SOURCE)
     @IntDef(value = {
-            Error.UNKWON,
+            Error.UNKNOWN,
+            Error.SERVER,
             Error.TIMEOUT,
-            Error.SERVER
+            Error.DATABASE
     }, flag = true)
     public @interface Error {
-        int UNKWON = 1;
-        int TIMEOUT = 2;
-        int SERVER = 3;
+        int UNKNOWN = 1;
+        int SERVER = 2;
+        int TIMEOUT = 2 << 1;
+        int DATABASE = 2 << 2;
     }
 }
