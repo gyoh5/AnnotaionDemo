@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AnnotaionDemo</string>
+    <string name="title_default">대화</string>
+    <string name="title_share">공유</string>
 </resources>
